@@ -13,5 +13,5 @@ make
 
 ## Credits
 
-Fire effect: [https://lodev.org/cgtutor/fire.html](https://lodev.org/cgtutor/fire.html)
-Canvas module: @AnatSanzh
+Fire effect: [https://lodev.org/cgtutor/fire.html](https://lodev.org/cgtutor/fire.html)  
+Canvas module: [@AnatSanzh](https://github.com/AnatSanzh/)

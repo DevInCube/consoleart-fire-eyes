@@ -8,7 +8,6 @@
 #include "canvas.h"
 
 const float pi = 3.14159;
-const int delay = 20;
 
 int randColor() { return abs(32768 + rand()) % 256; }
 
@@ -19,7 +18,15 @@ unsigned long getTime() { return clock(); }
 
 int std_min(int a, int b) { return fmin(a, b); }
 
-void waitFrame(int millis, float sec) { sleepMillis(delay); }
+void waitFrame(int elapsedTime, int maxSleep)
+{
+    int elapsedMillis = elapsedTime / (float)CLOCKS_PER_SEC * 1000;
+    int dt = maxSleep - elapsedMillis;
+    if (dt > 0)
+    {
+        sleepMillis(dt);
+    }
+}
 
 int done() { return 0; }
 
@@ -118,10 +125,11 @@ int main(int argc, char *argv[])
     }
 
     float t = 0;
+    int clockPerFrame = 0;
     //start the loop (one frame per loop)
     while (!done())
     {
-        const float dt = delay / 1000.0;
+        const float dt = clockPerFrame / (float)CLOCKS_PER_SEC;
         center.x = w / 2 + r;
         t += dt;
         const float moveSpeed = 5;
@@ -145,8 +153,9 @@ int main(int argc, char *argv[])
         //
         //timing: set to maximum 50 milliseconds per frame = 20 frames per second
         oldTime = time;
-        waitFrame(oldTime, 0.05);
         time = getTime();
+        clockPerFrame = time - oldTime;
+        waitFrame(clockPerFrame, 50);
 
         //randomize the bottom row of the fire buffer
         for (int x = 0; x < w; x++)
